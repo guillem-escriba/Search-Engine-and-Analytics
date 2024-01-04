@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="analytics-dashboard">
+    <h2>Web Analytics Dashboard</h2>
+
+    <!-- Grid Layout for Charts and Data -->
+    <div class="analytics-grid">
+        <!-- Chart: Session Times -->
+        <div class="chart-container">
+            <img src="{{ session_chart_url }}" alt="Session Times Chart" class="chart-image">
+            <h3>Session Times</h3>
+            <p>Shows the distribution of session start times, providing insights into peak usage hours.</p>
+        </div>
+
+        <!-- Chart: Requests and Clicks -->
+        <div class="chart-container">
+            <img src="{{ requests_clicks_chart_url }}" alt="Requests and Clicks Chart" class="chart-image">
+            <h3>Requests and Clicks</h3>
+            <p>Compares the total number of requests with clicks, indicating search effectiveness.</p>
+        </div>
+
+        <!-- Chart: Clicks per Document -->
+        <div class="chart-container">
+            <img src="{{ clicks_per_document_chart_url }}" alt="Clicks per Document Chart" class="chart-image">
+            <h3>Clicks per Document</h3>
+            <p>Highlights the most interacted documents, showing user interest and document relevance.</p>
+        </div>
+
+        <!-- Chart: Requests Over Time -->
+        <div class="chart-container">
+            <img src="{{ requests_over_time_chart_url }}" alt="Requests Over Time Chart" class="chart-image">
+            <h3>Requests Over Time</h3>
+            <p>Tracks the volume of search requests over time, reflecting user search activity trends.</p>
+        </div>
+    </div>
+
+    <!-- Detailed Data Section -->
+    <div class="data-section">
+        <div class="data-category">
+            <h3>Session Data</h3>
+            {% for session in sessions %}
+            <div class="data-entry">
+                <p>Session ID: {{ session.session_id }}</p>
+                <p>User IP: {{ session.user_ip }}</p>
+                <p>Location: {{ session.location[0] }}, {{ session.location[1] }}</p>
+                <p>Start Time: {{ session.start_time }}</p>
+                <p>End Time: {{ session.end_time }}</p>
+                <p>User Agent: {{ session.user_agent }}</p>
+            </div>
+            {% else %}
+            <p>No session data available.</p>
+            {% endfor %}
+        </div>
+
+        <div class="data-category">
+            <h3>Request Data</h3>
+            {% for request in requests %}
+            <div class="data-entry">
+                <p>Request ID: {{ request.request_id }}</p>
+                <p>Session ID: {{ request.session_id }}</p>
+                <p>Query: {{ request.query }}</p>
+                <p>Timestamp: {{ request.timestamp }}</p>
+            </div>
+            {% else %}
+            <p>No request data available.</p>
+            {% endfor %}
+        </div>
+
+        <div class="data-category">
+            <h3>Click Data</h3>
+            {% for click in clicks %}
+            <div class="data-entry">
+                <p>Click ID: {{ click.click_id }}</p>
+                <p>Session ID: {{ click.session_id }}</p>
+                <p>Document ID: {{ click.document_id }}</p>
+                <p>Timestamp: {{ click.timestamp }}</p>
+                <p>Query: {{ click.query }}</p>
+                <p>Rank: {{ click.rank }}</p>
+            </div>
+            {% else %}
+            <p>No click data available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .analytics-dashboard {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        color: #fff; /* White text for contrast */
+    }
+
+    .analytics-dashboard h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #0056b3; /* Dark Blue */
+    }
+
+    .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .chart-container {
+        border: 1px solid #007bff; /* Bright Blue */
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #003366; /* Darker Blue */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chart-image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .data-section {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .data-category h3 {
+        margin-top: 0;
+        background-color: #0056b3; /* Dark Blue */
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .data-entry {
+        background-color: #e7f1ff; /* Light Blue */
+        border: 1px solid #b3d1ff; /* Lighter Blue Border */
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        color: #003366; /* Darker Blue Text */
+    }
+
+    @media (max-width: 768px) {
+        .data-section {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+{% endblock %}

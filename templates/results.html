@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block content %}
+    Found <strong>{{ found_counter }}</strong> results...
+    <hr>
+    {% for tweet in results_list %}
+        <div class="tweet">
+            <!-- Link for click tracking, redirecting to tweet_detail through track_click route -->
+            <a href="{{ url_for('track_click', tweet_id=tweet['id'], query=session.last_search_query, rank=loop.index) }}">
+                <p class="tweet-text"><strong>{{ tweet['Tweet'][:80] }}</strong></p>
+            </a>
+            <p class="tweet-details">
+                <span class="tweet-text"><strong>Tweet:</strong> {{ tweet['Tweet'] }}</span>
+                <span class="date"><strong>Date:</strong> {{ tweet['Date'] }}</span>
+                <span class="hashtags"><strong>Hashtags:</strong> {{ tweet['Hashtags'] }}</span>
+                <span class="likes"><strong>Likes:</strong> {{ tweet['Likes'] }}</span>
+                <span class="retweets"><strong>Retweets:</strong> {{ tweet['Retweets'] }}</span>
+            </p>
+            <p class="tweet-url">
+                <a href="{{ tweet['Url'] }}" target="_blank"><strong>View Original Tweet</strong></a>
+            </p>
+        </div>
+    {% endfor %}
+
+
+    <!-- Pagination -->
+    <nav aria-label="Search results pages">
+        <ul class="pagination">
+            {% if current_page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('search_results', query=session.last_search_query, page=current_page-1) }}">Previous</a>
+                </li>
+            {% endif %}
+            {% for page_num in range(1, pages + 1) %}
+                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('search_results', query=session.last_search_query, page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            {% if current_page < pages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('search_results', query=session.last_search_query, page=current_page+1) }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

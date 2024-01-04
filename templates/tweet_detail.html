@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block page_title %}Tweet Details{% endblock %}
+{% block content %}
+<div class="tweet-detail-container">
+    <h2>Tweet Details</h2>
+    <div class="tweet-detail">
+        <h5>{{ tweet['Tweet'] }}</h5>
+        <div class="tweet-meta">
+            <p><strong>Date:</strong> {{ tweet['Date'] }}</p>
+            <p><strong>Hashtags:</strong> {{ tweet['Hashtags'] }}</p>
+            <p><strong>Likes:</strong> {{ tweet['Likes'] }}</p>
+            <p><strong>Retweets:</strong> {{ tweet['Retweets'] }}</p>
+        </div>
+        <div class="tweet-actions">
+            <a href="{{ tweet['Url'] }}" target="_blank" class="tweet-link-button">View Original Tweet</a>
+            <!-- Return to Results Button -->
+            <a href="{{ url_for('search_results', query=session.last_search_query, page=1) }}" class="return-button">Return to Results</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .tweet-detail-container {
+        margin: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+    .tweet-detail h3 {
+        color: #333;
+        font-size: 1.5em;
+    }
+    .tweet-meta p {
+        margin: 5px 0;
+        color: #555;
+        font-size: 1.1em;
+    }
+    .tweet-link-button, .return-button {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-top: 10px;
+        margin-right: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+    .tweet-link-button:hover {
+        background-color: #9cc5f1;
+    }
+    .return-button:hover {
+        background-color: #a7f19c;
+    }
+    .return-button {
+        background-color: #28a745; /* Different color for return button */
+    }
+</style>
+{% endblock %}
